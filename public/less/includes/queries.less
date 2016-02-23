@@ -1,0 +1,81 @@
+queries {
+  @backgroudColor: #EEE;
+  @editBackgroundColor: #CCC;
+  display: flex;
+  h4 {
+    width: 100%;
+  }
+  padding: 5px 10px;
+  flex-wrap: wrap;
+  > div {
+    border-radius: 5px;
+    background-color: @backgroudColor;
+    padding: 5px;
+    margin: 0 5px 5px 0;
+    flex-grow: 1;
+
+    input {
+      flex-grow: 1;
+      flex-basis: max-content;
+      border-radius: 5px;
+      background-color: @backgroudColor;
+      border: 0px;
+      padding: 4px 4px 3px;
+      font-size: 1.1em;
+      margin: 0 5px;
+      &:focus {
+        outline: none;
+      }
+    }
+
+
+    .controls {
+      display: flex;
+      align-items: center;
+
+      i {
+        margin: 0 10px;
+      }
+
+      i.fa-circle {
+        text-shadow: -1px -1px 0 #999,
+                      1px -1px 0 #999,
+                     -1px  1px 0 #999,
+                      1px  1px 0 #999;
+      }
+
+      i.fa-plus, i.fa-search {
+        display: none;
+      }
+    }
+
+    &.edit {
+      width: 100%;
+      background-color: @editBackgroundColor;
+      .form {
+        padding: 10px 5px 5px;
+        .form-body {
+          align-items: center;
+          display: flex;
+          label {
+            margin: 0 5px;
+          }
+          button {
+            margin: 0 5px 0 0;
+          }
+        }
+        .buttons {
+          margin-top: 10px;
+        }
+      }
+    }
+
+
+    &:last-child {
+      i.fa-plus, i.fa-search {
+        display: inline;
+      }
+    }
+
+  }
+}

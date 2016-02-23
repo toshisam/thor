@@ -1,0 +1,106 @@
+.create-colors(@color) {
+  @darkest  : "@{color}-darkest";
+  @darker   : "@{color}-darker";
+  @dark     : "@{color}-dark";
+  @light    : "@{color}-light";
+  @lighter  : "@{color}-lighter";
+  @lightest : "@{color}-lightest";
+
+  .@{color}-darkest { color: @@darkest };
+  .@{color}-darker { color: @@darker };
+  .@{color}-dark { color: @@dark };
+  .@{color} { color: @@color };
+  .@{color}-light { color: @@light };
+  .@{color}-lighter { color: @@lighter };
+  .@{color}-lightest { color: @@lightest };
+
+  .@{color}-darkest-bg { background-color: @@darkest };
+  .@{color}-darker-bg { background-color: @@darker };
+  .@{color}-dark-bg { background-color: @@dark };
+  .@{color}-bg { background-color: @@color };
+  .@{color}-light-bg { background-color: @@light };
+  .@{color}-lighter-bg { background-color: @@lighter };
+  .@{color}-lightest-bg { background-color: @@lightest };
+}
+
+@green-darkest    : #3F6833;
+@green-darker     : #508642;
+@green-dark       : #629E51;
+@green            : #7EB26D;
+@green-light      : #9AC48A;
+@green-lighter    : #B7DBAB;
+@green-lightest   : #E0F9D7;
+.create-colors(green);
+
+@yellow-darkest   : #967302;
+@yellow-darker    : #CCA300;
+@yellow-dark      : #E5AC0E;
+@yellow           : #EAB839;
+@yellow-light     : #F2C96D;
+@yellow-lighter   : #F4D598;
+@yellow-lightest  : #FCEACA;
+.create-colors(yellow);
+
+@cyan-darkest     : #2F575E;
+@cyan-darker      : #447EBC;
+@cyan-dark        : #64B0C8;
+@cyan             : #6ED0E0;
+@cyan-light       : #65C5DB;
+@cyan-lighter     : #70DBED;
+@cyan-lightest    : #CFFAFF;
+.create-colors(cyan);
+
+@orange-darkest   : #99440A;
+@orange-darker    : #C15C17;
+@orange-dark      : #E0752D;
+@orange           : #EF843C;
+@orange-light     : #F9934E;
+@orange-lighter   : #F9BA8F;
+@orange-lightest  : #F9E2D2;
+.create-colors(orange);
+
+@red-darkest      : #58140C;
+@red-darker       : #890F02;
+@red-dark         : #BF1B00;
+@red              : #E24D42;
+@red-light        : #EA6460;
+@red-lighter      : #F29191;
+@red-lightest     : #FCE2DE;
+.create-colors(red);
+
+@blue-darkest     : #052B51;
+@blue-darker      : #0A437C;
+@blue-dark        : #0A50A1;
+@blue             : #1F78C1;
+@blue-light       : #5195CE;
+@blue-lighter     : #82B5D8;
+@blue-lightest    : #BADFF4;
+.create-colors(blue);
+
+@magenta-darkest  : #511749;
+@magenta-darker   : #6D1F62;
+@magenta-dark     : #962D82;
+@magenta          : #BA43A9;
+@magenta-light    : #D683CE;
+@magenta-lighter  : #E5A8E2;
+@magenta-lightest : #F9D9F9;
+.create-colors(magenta);
+
+@purple-darkest   : #3F2B5B;
+@purple-darker    : #584477;
+@purple-dark      : #614D93;
+@purple           : #705DA0;
+@purple-light     : #806EB7;
+@purple-lighter   : #AEA2E0;
+@purple-lightest  : #DEDAF7;
+.create-colors(purple);
+
+@gray-darkest   : #000000;
+@gray-darker    : #333333;
+@gray-dark      : #666666;
+@gray           : #999999;
+@gray-light     : #CCCCCC;
+@gray-lighter   : #DDDDDD;
+@gray-lightest  : #EEEEEE;
+.create-colors(gray);
+
