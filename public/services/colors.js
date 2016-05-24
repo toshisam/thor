@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import modules from 'ui/modules';
-const app = modules.get('app/thor/directives', []);
+const app = modules.get('app/thor/services', []);
 app.service('$colors', () => {
   const colors = {
     'green-darkest'    : '#3F6833',

@@ -1,3 +1,9 @@
 import 'plugins/thor/directives/queries/queries';
 import 'plugins/thor/directives/query/query';
 import 'plugins/thor/directives/color_picker/color_picker';
+import 'plugins/thor/directives/modal/modal';
+import 'plugins/thor/directives/new_workspace/new_workspace';
+import 'plugins/thor/directives/new_visualization/new_visualization';
+import 'plugins/thor/directives/metric/metric';
+import 'plugins/thor/directives/buckets/bucket';
+import 'plugins/thor/directives/chart/chart';

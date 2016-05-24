@@ -1,15 +1,19 @@
 queries {
-  @backgroudColor: #EEE;
-  @editBackgroundColor: #CCC;
+  @backgroudColor: @gray-darkest;
+  @foregroundColor: @gray-lightest;
+  @editForegroundColor: @gray-darkest;
+  @editBackgroundColor: @gray-light;
   display: flex;
   h4 {
     width: 100%;
+    color: @gray;
   }
   padding: 5px 10px;
   flex-wrap: wrap;
   > div {
     border-radius: 5px;
     background-color: @backgroudColor;
+    color: @foregroundColor;
     padding: 5px;
     margin: 0 5px 5px 0;
     flex-grow: 1;
@@ -19,6 +23,7 @@ queries {
       flex-basis: max-content;
       border-radius: 5px;
       background-color: @backgroudColor;
+      color: @foregroundColor;
       border: 0px;
       padding: 4px 4px 3px;
       font-size: 1.1em;
@@ -52,6 +57,11 @@ queries {
     &.edit {
       width: 100%;
       background-color: @editBackgroundColor;
+      color: @editForegroundColor;
+      input {
+        background-color: white;
+        color: @editForegroundColor;
+      }
       .form {
         padding: 10px 5px 5px;
         .form-body {

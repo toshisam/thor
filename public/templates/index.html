@@ -1,7 +1,25 @@
-<div ng-controller="thorHelloWorld" id="thor">
-  <div class="nav">
-    <a ng-click="new()">New</a>
-    <a ng-click="save()">Save</a>
+<div ng-controller="thorWorkspace" id="thor">
+  <kbn-top-nav class="navbar navbar-default navbar-static-top" name="thor-nav">
+    <span class="title">{{ doc.name }}</span>
+    <span class="index-pattern">
+      Index Pattern: {{ doc.indexPattern }}
+    </span>
+    <ul class="nav navbar-nav">
+      <li ng-click="new()">New</li>
+      <li ng-click="save()">Save</li>
+      <li ng-click="configure()">Settings</li>
+    </ul>
+  </kbn-top-nav>
+  <div class="dashboard" ng-if="doc.indexPattern">
+    <queries doc="doc"></queries>
+    <button ng-click="newVisualization()">Add Visualization</button>
   </div>
-  <queries doc="doc"></queries>
+  <modal name="newWorkspace">
+    <new-workspace
+      index-patterns="indexPatterns"
+      doc="doc"></new-workspace>
+  </modal>
+  <modal name="newVisualization">
+    <new-visualization doc="doc"></new-visualization>
+  </modal>
 </div>

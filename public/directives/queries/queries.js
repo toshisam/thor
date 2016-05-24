@@ -12,9 +12,9 @@ app.directive('queries', (timefilter, $colors, $docs) => {
     template: template,
     link: ($scope, $el, $attrs) => {
 
-      function createNewQuery(value = '*') {
+      function createNewQuery(query = '*') {
         const currentColors = _.pluck($scope.doc.queries, 'color');
-        return { value, color: $colors.pick(currentColors) };
+        return { query, color: $colors.pick(currentColors), id: $docs.generateId() };
       }
 
       if (!$scope.doc.queries || !$scope.doc.queries.length) {

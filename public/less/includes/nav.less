@@ -1,8 +1,28 @@
 .nav {
-  padding: 15px 15px 0;
-  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: @gray-lightest;
   a {
-    margin-left: 10px;
+    margin: 0 10px 0;
     color: @gray;
+  }
+  > .left, > .right {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+  }
+  .right {
+    justify-content: flex-end;
+  }
+  span {
+    margin: 0 10px 0;
+    &.title {
+      font-size: 1.5em;
+    }
+    &.index-pattern {
+      color: @gray-light;
+    }
   }
 }

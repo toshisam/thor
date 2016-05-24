@@ -1,0 +1,28 @@
+<div id="new-visualization">
+  <div class="visualization">
+    <div class="chart">
+      <chart chart="chart" search="search"></chart>
+    </div>
+    <div class="chart-controls">
+      <button
+        ng-click="refreshChart()"
+        class="btn btn-xs gray-bg gray-darkest">Refresh Chart</button>
+    </div>
+  </div>
+  <div class="controls">
+    <div class="menu">
+      <div class="menu-item">Panel</div>
+      <div class="menu-item active">Metrics</div>
+      <div class="menu-item">Options</div>
+    </div>
+    <div class="editor">
+      <metric
+      index-pattern="doc.indexPattern"
+      ng-repeat="metric in visdoc.metrics" metric="metric"></metric>
+    </div>
+  </div>
+<button ng-click="close()"
+  class="red-bg gray-lightest">Cancel</button>
+<button ng-click="close()"
+  class="cyan-bg gray-dark">Add to Workspace</button>
+</div>
