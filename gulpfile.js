@@ -24,7 +24,7 @@ var pathToKibana = '../kibana';
 var buildDir = path.resolve(__dirname, 'build');
 var targetDir = path.resolve(__dirname, 'target');
 var buildTarget = path.resolve(buildDir, pkg.name);
-var kibanaPluginDir = path.resolve(__dirname, pathToKibana, 'installedPlugins', pkg.name);
+var kibanaPluginDir = path.resolve(__dirname, pathToKibana, 'plugins', pkg.name);
 
 var include = [
   'package.json',
@@ -36,6 +36,7 @@ var include = [
 ];
 
 var exclude = [
+  '.git',
   'gulpfile.js',
   '.eslintrc'
 ];
@@ -116,7 +117,14 @@ gulp.task('package', ['build'], function (done) {
 });
 
 gulp.task('dev', ['sync'], function (done) {
-  gulp.watch(['package.json', 'index.js', 'public/**/*', 'server/**/*'], ['sync', 'lint']);
+  const paths = [
+    'package.json',
+    'index.js',
+    'node_modules/@elastic/rhythm-visualizations/dist/**/*.js',
+    'public/**/*',
+    'server/**/*'
+  ];
+  gulp.watch(paths, ['sync']);
 });
 
 

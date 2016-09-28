@@ -1,47 +1,47 @@
-var apiRoutes = require('./server/routes/api');
-module.exports = function (kibana) {
-  return new kibana.Plugin({
+import apiFieldsRoutes from './server/routes/api/fields';
+import apiVisRoutes from './server/routes/api/vis';
 
-    id: 'thor',
-    require: ['kibana', 'elasticsearch'],
+import Promise from 'bluebird';
+export default function (kibana) {
+  return new kibana.Plugin({
+    require: ['kibana','elasticsearch'],
+
     uiExports: {
+
       app: {
         title: 'Thor',
-        // listed: false,
-        description: 'When 3 and 4 have a baby it\'s THOR',
-        icon: 'plugins/thor/assets/thor.svg',
+        description: 'A Metrics UI',
         main: 'plugins/thor/app',
         injectVars: function (server, options) {
           var config = server.config();
           return {
             kbnIndex: config.get('kibana.index'),
             esShardTimeout: config.get('elasticsearch.shardTimeout'),
-            esApiVersion: config.get('elasticsearch.apiVersion')
+            esApiVersion: config.get('elasticsearch.apiVersion'),
+            basePath: config.get('server.basePath')
           };
         }
       }
-      // links: [
-      //   {
-      //     title: 'Thor',
-      //     url: '/app/thor',
-      //     description: 'When 3 and 4 have a baby it\'s THOR',
-      //     icon: 'plugins/thor/assets/thor.svg'
-      //   }
-      // ]
     },
 
-    config: function (Joi) {
+    config(Joi) {
       return Joi.object({
         enabled: Joi.boolean().default(true),
+        chartResolution: Joi.number().default(150),
+        minimumBucketSize: Joi.number().default(10)
       }).default();
     },
 
 
-    init: function (server, options) {
-      // Add server routes and initalize the plugin here
-      apiRoutes(server);
+    init(server, options) {
+      const config = server.config();
+      const { status } = server.plugins.elasticsearch;
+
+      apiFieldsRoutes(server);
+      apiVisRoutes(server);
+
     }
+
 
   });
 };
-
