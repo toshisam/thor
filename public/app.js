@@ -21,7 +21,6 @@ import Routes from './routes';
 import { changeTimerange } from './actions/app';
 import Header from './containers/header';
 import SearchBar from './containers/search_bar';
-import StatusLink from './containers/status_link';
 import Breadcrumbs from './containers/breadcrumbs';
 import defaultTimefilterSettings from './lib/default_timefilter_settings';
 
@@ -106,7 +105,6 @@ chrome
     // created with the `connect()` method from react-redux.
     $scope.Header = Header;
     $scope.Breadcrumbs = Breadcrumbs;
-    $scope.StatusLink = StatusLink;
 
     // Subscribe to changes to the $store. If the server or servers objects
     // are fetching then we need to set the loading indicator to display.

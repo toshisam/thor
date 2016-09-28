@@ -3,7 +3,6 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import SearchBar from '../containers/search_bar';
-import DetailHeader from '../components/detail_header';
 
 class Header extends Component {
   constructor(props) {
