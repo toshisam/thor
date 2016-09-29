@@ -1,6 +1,6 @@
 import List from './list';
-import Create from './create';
+import Edit from './edit';
 export default {
   List,
-  Create
+  Edit
 };

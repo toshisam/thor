@@ -9,12 +9,11 @@ import createNewPanel from '../../lib/create_new_panel';
 import { panelToEdit } from '../../actions/dashboard';
 export default React.createClass({
 
-  fetch() {
+  fetch(options) {
     const { dispatch } = this.props;
-    dispatch(fetchVisData({
-      panels: [this.props.model],
-      includeDashboard: true
-    }));
+    dispatch(fetchVisData(_.assign({
+      panels: [this.props.model]
+    }, options)));
   },
 
   componentWillMount() {
@@ -32,13 +31,13 @@ export default React.createClass({
     const nextPanel = _.assign({}, model, part);
     dispatch(panelToEdit(nextPanel));
     this.debouncedFetch({
-      panels: [nextPanel],
-      includeDashboard: false
+      panels: [nextPanel]
     });
   },
 
   handleCancel(e) {
     e.preventDefault();
+    this.fetch();
     if (this.props.onCancel) {
       this.props.onCancel();
     }
@@ -46,6 +45,7 @@ export default React.createClass({
 
   handleSave(e) {
     e.preventDefault();
+    this.fetch();
     if (this.props.onSave) {
       this.props.onSave(this.props.model);
     }

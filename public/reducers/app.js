@@ -5,10 +5,14 @@ import {
 } from '../actions/vis_data';
 
 import {
-  SET_GLOBAL_STATE,
+  SET_REFRESH,
   SET_TIMEFILTER,
   CHANGE_TIMERANGE,
 } from '../actions/app';
+
+import {
+  GET_DASHBOARD_ERROR
+} from '../actions/dashboard';
 
 import rison from 'rison-node';
 import { LOCATION_CHANGE } from 'react-router-redux';
@@ -18,24 +22,12 @@ export default (state = {}, action) => {
   switch (action.type) {
     case SET_TIMEFILTER:
       return _.assign({}, state, {
-        globalState: _.assign({}, state.globalState, {
-          value: _.assign({}, state.globalState.value, {
-            time: action.time
-          })
-        })
+        timefilter: action.timefilter
       });
-    case SET_GLOBAL_STATE:
-      const rawGlobalState = action.globalState || '()';
+    case SET_REFRESH:
       return _.assign({}, state, {
-        globalState: {
-          value: rison.decode(rawGlobalState),
-          rison: rawGlobalState
-        }
+        refresh: action.refresh
       });
-    // This is being called by the Rhythm controller in Angular
-    // using the Kibana Executor service. When it executes, it calls
-    // the dispatch for the changeTimerange action and updates.
-    // all the interval/pause/updates are handle there
     case CHANGE_TIMERANGE:
       const { timerange } = action;
       if (!state.shouldFetch && (state.timerange.max && state.timerange.min)) {
@@ -58,13 +50,11 @@ export default (state = {}, action) => {
       return _.assign({}, state, {
         shouldFetch: false
       });
-    // case RECEIVE_SERVER_METRICS_ERROR:
-    // case RECEIVE_SERVER_DETAILS_ERROR:
-    // case RECEIVE_METRICBEAT_METRICS_ERROR:
-    //   return _.assign({}, state, {
-    //     shouldFetch: false,
-    //     error: action.error
-    //   });
+    case GET_DASHBOARD_ERROR:
+      return _.assign({}, state, {
+        shouldFetch: false,
+        error: action.error
+      });
     case LOCATION_CHANGE:
       return _.assign({}, state, {
         error: null

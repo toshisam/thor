@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import DashboardHeader from './dashboard_header';
 import DashboardBody from './dashboard_body';
-import { updateDashboard } from '../../actions/dashboard';
+import { updateDashboard, saveDashboard } from '../../actions/dashboard';
 import { fetchVisData } from '../../actions/vis_data';
 const fields = ['x','y','w','h'];
 
@@ -17,11 +17,21 @@ export default React.createClass({
     dispatch(fetchVisData(options));
   },
 
+  componentWillMount() {
+    const { dispatch } = this.props;
+    this.save = _.debounce((dashboard) => {
+      console.log('Saving', dashboard);
+      dispatch(saveDashboard(dashboard));
+    }, 1000, { leading: false, trailing: true });
+  },
+
   handleChange(part) {
     const { dispatch } = this.props;
     const doc = _.get(this, 'props.dashboard.doc');
-    dispatch(updateDashboard(_.assign({}, doc, part)));
+    const newDoc = _.assign({}, doc, part);
+    dispatch(updateDashboard(newDoc));
     this.fetch();
+    this.save(newDoc);
   },
 
   handleLayoutChange(layout) {

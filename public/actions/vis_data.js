@@ -20,7 +20,7 @@ export function fetchVisData(options) {
   options = _.assign({}, {
     panels: [],
     filters: [],
-    includeDashboard: false
+    includeDashboard: true
   }, options);
 
   return (dispatch, getState) => {
@@ -28,10 +28,13 @@ export function fetchVisData(options) {
     const { app, visData, dashboard } = getState();
     if (visData.request.isFetching) return Promise.resolve();
     const dashPanels = dashboard.doc.panels
-      .filter(panel => !panels.find(p => p.id === panel.id))
+      .filter(panel => {
+        const exists = panels.find(p => p.id === panel.id);
+        return exists ? false : true;
+      })
       .filter(panel => {
         if (!dashboard.panelToEdit) return true;
-        return dashboard.panelToEdit.id === panel.id;
+        return dashboard.panelToEdit.id !== panel.id;
       });
     const params = {
       method: 'POST',

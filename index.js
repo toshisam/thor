@@ -1,5 +1,7 @@
 import apiFieldsRoutes from './server/routes/api/fields';
 import apiVisRoutes from './server/routes/api/vis';
+import apiDashboardsRoutes from './server/routes/api/dashboards';
+import ensureIndex from './server/lib/ensure_index';
 
 import Promise from 'bluebird';
 export default function (kibana) {
@@ -27,6 +29,7 @@ export default function (kibana) {
     config(Joi) {
       return Joi.object({
         enabled: Joi.boolean().default(true),
+        index: Joi.string().default('.thor'),
         chartResolution: Joi.number().default(150),
         minimumBucketSize: Joi.number().default(10)
       }).default();
@@ -39,6 +42,14 @@ export default function (kibana) {
 
       apiFieldsRoutes(server);
       apiVisRoutes(server);
+      apiDashboardsRoutes(server);
+
+      if (status) {
+        status.on('green', () => {
+          Promise.try(ensureIndex(server))
+          .then(() => { });
+        });
+      }
 
     }
 

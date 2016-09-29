@@ -24,7 +24,16 @@ import SearchBar from './containers/search_bar';
 import Breadcrumbs from './containers/breadcrumbs';
 import defaultTimefilterSettings from './lib/default_timefilter_settings';
 
-modules.get('kibana').run(function (uiSettings) {
+modules.get('kibana/global_state').config(($injector, $provide) => {
+  // Completely disable global state so it doesn't interfer with the app routing
+  // by injecting query params.
+  $provide.service('globalState', () => {
+    return { getQueryParamName() { } };
+  });
+
+});
+
+modules.get('kibana').run((uiSettings) => {
   const timeValue = JSON.stringify(defaultTimefilterSettings.time);
   const refreshIntervalValue = JSON.stringify(defaultTimefilterSettings.refreshInterval);
   _.set(uiSettings, 'defaults.timepicker:timeDefaults.value', timeValue);
@@ -33,86 +42,23 @@ modules.get('kibana').run(function (uiSettings) {
 
 chrome
   .setRootTemplate(appContainer)
-  .setRootController((globalState, $scope, $history, $store, $executor,
-                      docTitle, config, timefilter) => {
-
-    // Setup the default timezony stuffs...
-    function setDefaultTimezone() {
-      moment.tz.setDefault(config.get('dateFormat:tz'));
-    }
-    $scope.$on('init:config', setDefaultTimezone);
-    $scope.$on('change:config.dateFormat:tz', setDefaultTimezone);
-
-    // Set the doc title
-    docTitle.change('Thor');
-
-    function setTimerange(timefilter, $store) {
-      const bounds = timefilter.getBounds();
-      const paused = timefilter.refreshInterval.pause;
-      const interval = timefilter.refreshInterval.value;
-      const range = {
-        min: moment.utc(bounds.min.valueOf()),
-        max: moment.utc(bounds.max.valueOf())
-      };
-      $store.dispatch(changeTimerange(range));
-    }
-
-    // Enable the timefilter
-    timefilter.enabled = true;
-
-    // Initialize the timepicker and set the timezone
-    timefilter.init();
-
-    // Before you do anything you need to set the timerange so when
-    // the first requests fire they will have access to the timerange
-    setTimerange(timefilter, $store);
+  // .setRootController((globalState, $scope, $history, $store, $executor,
+  //                     docTitle, config, timefilter) => {
+  .setRootController(($store, $history, $scope) => {
 
     // Mount the React app
     const el = document.getElementById('thor');
     render(<Routes store={ $store } history={ $history }/>, el);
 
-    // Register the executor to set the timerange. The containers
-    // (home, details, etc) are setup to fetch new data when the
-    // app.timerange updates.
-    $executor.register({
-      execute: () => {
-        setTimerange(timefilter, $store);
-        return Promise.resolve();
-      }
-    });
-
-    // Start the execture, this will run the execute method above
-    // based on the timefilter settings
-    $executor.start();
-
-    // Clean stuffs up... probably not necessary but it's there for
-    // good measure.
-    $scope.$watch('$destroy', () => $executor.destroy);
-
-    // We are ready... show the things!
-    $scope.ready = true;
-
     // Initalized the loading spinner thingy
     $scope.loading = false;
-
-    // Set the containers that are controlled outside the React app inside
-    // the `kbn-top-nav` (where the time picker is injected via Angular).
-    // It's a very careful ballet... don't fall.
-    //
-    // BTW, these use the `react` directive like
-    // `<react container="Header"/>` which will automatically get
-    // provided with `$store` and `$history`. These components need to be
-    // created with the `connect()` method from react-redux.
-    $scope.Header = Header;
-    $scope.Breadcrumbs = Breadcrumbs;
 
     // Subscribe to changes to the $store. If the server or servers objects
     // are fetching then we need to set the loading indicator to display.
     $store.subscribe(() => {
       const state = $store.getState();
       const time = _.get(state, 'app.globalState.value.time', {});
-      const loading = _.get(state, 'server.isFetching', false)
-        || _.get(state, 'servers.isFetching', false)
+      const loading = _.get(state, 'dashboard.request.isFetching', false)
         || _.get(state, 'fields.request.isFetching', false)
         || _.get(state, 'visData.request.isFetching', false);
 
@@ -122,9 +68,4 @@ chrome
       });
     });
 
-    // $scope.topNavMenu = [{
-    //   key: 'Options',
-    //   description: 'Options',
-    //   template: '<p>options here</p>'
-    // }];
   });

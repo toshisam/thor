@@ -377,7 +377,7 @@ export default (req) => {
                     id: `${percentile.id}:${percentile.percentile}`,
                     color: series.color,
                     label,
-                    legned: false,
+                    legend: false,
                     data: fillData,
                     lines: { show: true, fill: false, lineWidth: 0 },
                     points: { show: false }
