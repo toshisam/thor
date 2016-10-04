@@ -1,7 +1,3 @@
-require('babel-register')({
-  presets: ['es2015']
-});
-
 var gulp = require('gulp');
 var _ = require('lodash');
 var path = require('path');
@@ -126,5 +122,7 @@ gulp.task('dev', ['sync'], function (done) {
   ];
   gulp.watch(paths, ['sync']);
 });
+
+gulp.task('default', ['sync']);
 
 

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import moment from 'moment';
 import _ from 'lodash';
+import dateMath from '@elastic/datemath';
 import { connect } from 'react-redux';
 import storeShape from 'react-redux/lib/utils/storeShape';
 import { changeTimerange } from '../actions/app';
@@ -24,7 +25,7 @@ export default function scheduler(fetch) {
         const currentTimefilter = this.props.app.timefilter;
 
         const pausedChanged = currentRefresh.paused !== refresh.paused;
-        const intervalChanged = currentRefresh.interval !== refresh.interval;
+        const intervalChanged = !_.isEqual(currentRefresh, refresh);
         const timefilterChanged = !_.isEqual(currentTimefilter, timefilter);
 
         if (shouldFetch && _.isFunction(fetch)) {
@@ -38,7 +39,9 @@ export default function scheduler(fetch) {
 
         if (!refresh.paused && (intervalChanged || pausedChanged || timefilterChanged)) {
           this.stop();
-          this.start(timefilter);
+          // defer till the next event loop so we get the
+          // actual update from the props
+          _.defer(() => this.start());
         }
       }
 
@@ -57,9 +60,8 @@ export default function scheduler(fetch) {
         const _timefilter = timefilter || app.timefilter;
 
         if (_timefilter.mode === 'relative') {
-          range.min = moment.utc()
-            .subtract(_timefilter.value, _timefilter.unit);
-          range.max = moment.utc();
+          range.min = dateMath.parse(_timefilter.from);
+          range.max = dateMath.parse(_timefilter.to);
         } else {
           _.assign(range, timerange);
         }
@@ -67,7 +69,9 @@ export default function scheduler(fetch) {
         dispatch(changeTimerange(range));
 
         if (_.isFunction(fetch) && !app.refresh.paused) {
-          this.timerId = setTimeout(() => this.start(), app.refresh.interval);
+          const { refresh } = app;
+          const interval = moment.duration(refresh.value, refresh.unit).as('millisecond');
+          this.timerId = setTimeout(() => this.start(), interval);
         }
       }
 

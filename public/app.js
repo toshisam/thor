@@ -44,8 +44,8 @@ chrome
   .setRootTemplate(appContainer)
   // .setRootController((globalState, $scope, $history, $store, $executor,
   //                     docTitle, config, timefilter) => {
-  .setRootController(($store, $history, $scope) => {
-
+  .setRootController((docTitle, $store, $history, $scope) => {
+    docTitle.change('Thor');
     // Mount the React app
     const el = document.getElementById('thor');
     render(<Routes store={ $store } history={ $history }/>, el);

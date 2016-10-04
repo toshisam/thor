@@ -1,5 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
+import Timepicker from '../timepicker/picker';
+import TimepickerConfig from '../timepicker/config';
 import EditableText from '../editable_text';
 import SearchBox from '../search_box';
 import replaceVars from '../../lib/replace_vars';
@@ -7,8 +9,24 @@ import uuid from 'node-uuid';
 import Modal from 'react-modal';
 import PanelEditor from './panel_editor';
 import createNewPanel from '../../lib/create_new_panel';
-import { hidePanelModal, showPanelModal, panelToEdit } from '../../actions/dashboard';
+import ConfigPanel from '../config_panel';
+import {
+  hidePanelModal,
+  showPanelModal,
+  panelToEdit
+} from '../../actions/dashboard';
+import {
+  setRefresh,
+  setTimefilter
+} from '../../actions/app';
 export default React.createClass({
+
+  getInitialState() {
+    return {
+      showTimepicker: true,
+      showInterval: false
+    };
+  },
 
   createHandler(name) {
     return (value) => {
@@ -22,7 +40,11 @@ export default React.createClass({
     console.log('Search', query);
   },
 
-  openSettings() {
+  handleConfigClose() {
+    this.setState({
+      showTimepicker: false,
+      showInterval: false
+    });
   },
 
   handlePanelSave(panel) {
@@ -69,6 +91,27 @@ export default React.createClass({
     dispatch(showPanelModal());
   },
 
+  handleTimepickerClick() {
+    this.setState({ showTimepicker: !this.state.showTimepicker });
+  },
+
+  handleTimepickerChange(timefilter) {
+    const { dispatch } = this.props;
+    dispatch(setTimefilter(timefilter));
+    this.setState({ showTimepicker: !this.state.showTimepicker });
+
+  },
+
+  handleIntervalClick() {
+    this.setState({ showInterval: !this.state.showInterval });
+  },
+
+  handleTimepickerPause(paused) {
+    const { dispatch, app } = this.props;
+    const nextRefresh = _.assign({}, app.refresh, { paused });
+    dispatch(setRefresh(nextRefresh));
+  },
+
   render() {
     const { dashboard } = this.props;
     const { showPanelModal, panelToEdit, doc } = dashboard;
@@ -93,21 +136,34 @@ export default React.createClass({
             onChange={this.createHandler('title')}
             format={ str => replaceVars(str, this.props.location) }
             value={doc.title}/>
-          <a className="btn btn-default btn-xs"
-            onClick={this.addPanel}>
-            <i className="fa fa-plus"></i>
-            &nbsp;Add Widget
-          </a>
-          <a className="btn btn-default btn-xs"
-            onClick={this.openSettings}>
-            <i className="fa fa-cog"></i>
-            &nbsp;Dashboard Settings
-          </a>
+          <div className="dashboard__header-links">
+            <a className="dashboard__header-link"
+              onClick={this.addPanel}>
+              <i className="fa fa-plus"></i>
+              &nbsp;Add Widget
+            </a>
+            <a className="dashboard__header-link"
+              onClick={this.openSettings}>
+              <i className="fa fa-cog"></i>
+              &nbsp;Dashboard Settings
+            </a>
+          </div>
+          <Timepicker
+            refresh={this.props.app.refresh}
+            timefilter={this.props.app.timefilter}
+            onPause={ this.handleTimepickerPause }
+            onIntervalClick={ this.handleIntervalClick }
+            onPickerClick={ this.handleTimepickerClick }/>
         </div>
-        <SearchBox
-          className="dashboard__header-searchbox"
-          placeholder="Search results to overlay..."
-          action={ this.handleSearch }/>
+        <ConfigPanel show={this.state.showTimepicker} onClose={this.handleConfigClose}>
+          <TimepickerConfig onChange={ this.handleTimepickerChange }/>
+        </ConfigPanel>
+        <div className="dashboard__header-searchbox-row">
+          <SearchBox
+            className="dashboard__header-searchbox"
+            placeholder="Search results to overlay..."
+            action={ this.handleSearch }/>
+        </div>
         <Modal style={ modalStyle } isOpen={ showPanelModal }>
           <PanelEditor
             onSave={this.handlePanelSave}

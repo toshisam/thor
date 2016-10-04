@@ -7,12 +7,13 @@ export default {
     },
     timefilter: {
       mode: 'relative',
-      unit: 'h',
-      value: 1
+      from: 'now-1h',
+      to: 'now'
     },
     refresh: {
       paused: false,
-      interval: 10000
+      unit: 's',
+      value: 10
     }
   },
   routing: {},

@@ -6,25 +6,40 @@
 }
 
 .dashboard__header {
-  padding: 0 20px 20px;
   background-color: @topNavColor;
 }
 
-.dashboard__header-title-row {
+.dashboard__header-links {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-right: 20px;
+}
+
+.dashboard__header-link {
+  color: @grayDark;
+  margin-left: 20px;
+}
+
+.dashboard__header-title-row {
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   .btn {
     margin-left: 10px;
   }
+}
+
+.dashboard__header-searchbox-row {
+  padding: 10px;
 }
 
 .dashboard__header-title {
   display: flex;
   flex-grow: 1;
   align-items: center;
-  font-size: 28px;
-  line-height: 0;
+  font-weight: bold;
+  font-size: 16px;
 
   i.fa {
     color: @grayLighter;
