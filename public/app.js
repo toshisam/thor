@@ -19,9 +19,6 @@ import { render } from 'react-dom';
 import appContainer from './templates/app_container.html';
 import Routes from './routes';
 import { changeTimerange } from './actions/app';
-import Header from './containers/header';
-import SearchBar from './containers/search_bar';
-import Breadcrumbs from './containers/breadcrumbs';
 import defaultTimefilterSettings from './lib/default_timefilter_settings';
 
 modules.get('kibana/global_state').config(($injector, $provide) => {

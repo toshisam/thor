@@ -29,7 +29,7 @@ export function fetchVisData(options) {
     if (visData.request.isFetching) return Promise.resolve();
     const dashPanels = dashboard.doc.panels
       .filter(panel => {
-        const exists = panels.find(p => p.id === panel.id);
+        const exists = panels.find(p => p && panel && p.id === panel.id);
         return exists ? false : true;
       })
       .filter(panel => {

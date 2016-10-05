@@ -20,16 +20,16 @@ export default React.createClass({
     const handleTitleChange = value => {
       this.handleChange({ title: value });
     };
-
     return (
       <div className="vis_editor">
-        <div className="vis_editor__title">
-          { replaceVars(model.title, this.props.location)}
+        <div className="vis_editor__visualization">
+          <div className="vis_editor__visualization-title">{ model.title }</div>
+          <Visualization
+            className="dashboard__visualization"
+            onChange={this.handleChange}
+            {...this.props}/>
         </div>
         <VisPicker
-          onChange={this.handleChange}
-          {...this.props}/>
-        <Visualization
           onChange={this.handleChange}
           {...this.props}/>
         <VisConfig

@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
+import { Link } from 'react-router';
 import VisEditor from '../vis_editor/vis_editor';
 import uuid from 'node-uuid';
 import colors from '../../lib/colors';
@@ -7,12 +8,13 @@ import newSeriesFn from '../vis_editor/lib/new_series_fn';
 import { fetchVisData } from '../../actions/vis_data.js';
 import createNewPanel from '../../lib/create_new_panel';
 import { panelToEdit } from '../../actions/dashboard';
+import Header from '../../containers/header';
 export default React.createClass({
 
   fetch(options) {
     const { dispatch } = this.props;
     dispatch(fetchVisData(_.assign({
-      panels: [this.props.model]
+      panels: this.props.model && [this.props.model] || []
     }, options)));
   },
 
@@ -52,11 +54,24 @@ export default React.createClass({
   },
 
   render() {
+    const { model, dashboard } = this.props;
+    const dashboardsLink = {
+      pathname: `/dashboards`
+    };
+    const dashboardLink = {
+      pathname: `/dashboards/edit/${dashboard.doc.id}`
+    };
     return (
       <div className="panel_editor">
-        <div className="panel_editor__header">
-          <i className="fa fa-times" onClick={ this.handleCancel }></i>
-        </div>
+        <Header>
+          <div className="header__breadcrumbs">
+            <Link to={dashboardsLink}>Dashboards</Link>
+            <span>/</span>
+            <Link to={dashboardLink}>{ dashboard.doc.title }</Link>
+            <span>/</span>
+            <span>Edit Panel: {model.title}</span>
+          </div>
+        </Header>
         <div className="panel_editor__body">
           <VisEditor
             fields={this.props.fields}
@@ -66,10 +81,10 @@ export default React.createClass({
             model={this.props.model}/>
         </div>
         <div className="panel_editor__footer">
+          <Link className="btn btn-default"
+            to={dashboardLink}>Return to Dashboard</Link>
           <a onClick={ this.handleSave }
-            className="btn btn-success">Save Panel</a>
-          &nbsp;or&nbsp;
-          <a onClick={ this.handleCancel }>Cancel</a>
+            className="btn btn-primary">Save Panel</a>
         </div>
       </div>
     );

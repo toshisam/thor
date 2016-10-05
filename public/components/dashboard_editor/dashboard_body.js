@@ -1,6 +1,7 @@
 /* eslint new-cap:0 */
 import _ from 'lodash';
 import React from 'react';
+import { Link } from 'react-router';
 import PureRenderMixin from 'react/lib/ReactComponentWithPureRenderMixin';
 import ReactGridLayout, { WidthProvider } from 'react-grid-layout';
 import { showPanelModal, panelToEdit } from '../../actions/dashboard';
@@ -20,6 +21,10 @@ export default React.createClass({
 
   createElement(el) {
     var i = el.add ? '+' : el.i;
+    const { dashboard } = this.props;
+    const editLocation = {
+      pathname: `/dashboards/edit/${dashboard.doc.id}/panel/${el.id}`
+    };
     return (
       <div key={i} data-grid={el} className="dashboard__panel">
         <div className="dashboard__panel-content">
@@ -29,7 +34,7 @@ export default React.createClass({
             </div>
             <div className="dashboard__panel-header-controls">
               <div className="dashboard__panel-control-edit">
-                <i className="fa fa-pencil" onClick={ this.handleEdit(el) }></i>
+                <Link to={editLocation}><i className="fa fa-pencil"></i></Link>
               </div>
               <div className="dashboard__panel-control-move">
                 <i className="fa fa-arrows"></i>
@@ -61,14 +66,6 @@ export default React.createClass({
         };
         this.props.onChange(part);
       }
-    };
-  },
-
-  handleEdit(panel) {
-    return (e) => {
-      const { dispatch } = this.props;
-      dispatch(panelToEdit(panel));
-      dispatch(showPanelModal());
     };
   },
 

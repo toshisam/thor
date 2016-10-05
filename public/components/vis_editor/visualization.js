@@ -11,7 +11,7 @@ const types = {
 export default React.createClass({
 
   getDefaultProps() {
-    return { className: 'vis_editor__visualization' };
+    return { className: 'thor__visualization' };
   },
 
   render() {

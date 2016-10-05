@@ -15,17 +15,12 @@ import {
   showPanelModal,
   panelToEdit
 } from '../../actions/dashboard';
-import {
-  setRefresh,
-  setTimefilter
-} from '../../actions/app';
+import { push } from 'react-router-redux';
+import Header from '../../containers/header';
 export default React.createClass({
 
   getInitialState() {
-    return {
-      showTimepicker: true,
-      showInterval: false
-    };
+    return { showSettings: false };
   },
 
   createHandler(name) {
@@ -40,76 +35,19 @@ export default React.createClass({
     console.log('Search', query);
   },
 
-  handleConfigClose() {
-    this.setState({
-      showTimepicker: false,
-      showInterval: false
-    });
+  handleSettingsClose() {
+    this.setState({ showSettings: false });
   },
 
-  handlePanelSave(panel) {
-    const { dashboard } = this.props;
-    const { doc } = dashboard;
-    const maxY = _.max(doc.panels
-      .map(panel => panel.y)) || 0;
-    const current = doc.panels.find(doc => doc.id === panel.id);
-    const part = {};
-    if (current) {
-      part.panels = doc.panels.map(doc => {
-        if (doc.id === panel.id) return panel;
-        return doc;
-      });
-    } else {
-      part.panels = [
-        ...dashboard.doc.panels,
-        _.assign({}, panel, {
-          i: panel.id,
-          x: 0,
-          y: maxY && maxY + 1 || 0, // puts it at the bottom
-          w: 12,
-          h: 2
-        })
-      ];
-    }
-    this.props.onChange(part);
-    this.resetPanelEditor();
-  },
-
-  resetPanelEditor() {
-    const { dispatch } = this.props;
-    dispatch(hidePanelModal());
-    dispatch(panelToEdit(false));
-  },
-
-  handlePanelCancel() {
-    this.resetPanelEditor();
+  handleSettingsOpen() {
+    this.setState({ showSettings: !this.state.showSettings });
   },
 
   addPanel() {
-    const { dispatch } = this.props;
-    dispatch(panelToEdit(createNewPanel()));
-    dispatch(showPanelModal());
-  },
-
-  handleTimepickerClick() {
-    this.setState({ showTimepicker: !this.state.showTimepicker });
-  },
-
-  handleTimepickerChange(timefilter) {
-    const { dispatch } = this.props;
-    dispatch(setTimefilter(timefilter));
-    this.setState({ showTimepicker: !this.state.showTimepicker });
-
-  },
-
-  handleIntervalClick() {
-    this.setState({ showInterval: !this.state.showInterval });
-  },
-
-  handleTimepickerPause(paused) {
-    const { dispatch, app } = this.props;
-    const nextRefresh = _.assign({}, app.refresh, { paused });
-    dispatch(setRefresh(nextRefresh));
+    const { dispatch, dashboard } = this.props;
+    const panel = createNewPanel();
+    dispatch(panelToEdit(panel));
+    dispatch(push(`/dashboards/edit/${dashboard.doc.id}/panel/${panel.id}`));
   },
 
   render() {
@@ -128,9 +66,13 @@ export default React.createClass({
         bottom: 50
       }
     };
+    let settings;
+    if (this.state.showSettings) {
+      settings = (<div>Dashboard settings</div>);
+    }
     return (
-      <div className="dashboard__header">
-        <div className="dashboard__header-title-row">
+      <div>
+        <Header config={settings} onConfigClose={this.handleSettingsClose}>
           <EditableText
             className="dashboard__header-title"
             onChange={this.createHandler('title')}
@@ -140,37 +82,15 @@ export default React.createClass({
             <a className="dashboard__header-link"
               onClick={this.addPanel}>
               <i className="fa fa-plus"></i>
-              &nbsp;Add Widget
+              &nbsp;Add Panel
             </a>
             <a className="dashboard__header-link"
-              onClick={this.openSettings}>
+              onClick={this.handleSettingsOpen}>
               <i className="fa fa-cog"></i>
               &nbsp;Dashboard Settings
             </a>
           </div>
-          <Timepicker
-            refresh={this.props.app.refresh}
-            timefilter={this.props.app.timefilter}
-            onPause={ this.handleTimepickerPause }
-            onIntervalClick={ this.handleIntervalClick }
-            onPickerClick={ this.handleTimepickerClick }/>
-        </div>
-        <ConfigPanel show={this.state.showTimepicker} onClose={this.handleConfigClose}>
-          <TimepickerConfig onChange={ this.handleTimepickerChange }/>
-        </ConfigPanel>
-        <div className="dashboard__header-searchbox-row">
-          <SearchBox
-            className="dashboard__header-searchbox"
-            placeholder="Search results to overlay..."
-            action={ this.handleSearch }/>
-        </div>
-        <Modal style={ modalStyle } isOpen={ showPanelModal }>
-          <PanelEditor
-            onSave={this.handlePanelSave}
-            onCancel={this.handlePanelCancel}
-            model={panelToEdit}
-            {...this.props}/>
-        </Modal>
+        </Header>
       </div>
     );
   }

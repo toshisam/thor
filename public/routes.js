@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React, { Component, PropTypes } from 'react';
 import { Provider } from 'react-redux';
 import onEnterDashboardEdit from './lib/on_enter_dashboard_edit';
+import onEnterDashboardEditPanel from './lib/on_enter_dashboard_edit_panel';
 import {
   Router,
   Route,
@@ -33,6 +34,10 @@ export default (props) => {
               path="edit/:id"
               onEnter={ onEnterDashboardEdit(store, history) }
               component={ Dashboards.Edit }/>
+            <Route
+              path="edit/:id/panel/:panelId"
+              onEnter={ onEnterDashboardEditPanel(store, history) }
+              component={ Dashboards.EditPanel }/>
           </Route>
         </Route>
       </Router>

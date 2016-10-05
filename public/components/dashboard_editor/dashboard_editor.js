@@ -29,9 +29,11 @@ export default React.createClass({
     const { dispatch } = this.props;
     const doc = _.get(this, 'props.dashboard.doc');
     const newDoc = _.assign({}, doc, part);
-    dispatch(updateDashboard(newDoc));
-    this.fetch();
-    this.save(newDoc);
+    if (!_.isEqual(newDoc, doc)) {
+      dispatch(updateDashboard(newDoc));
+      this.fetch();
+      this.save(newDoc);
+    }
   },
 
   handleLayoutChange(layout) {
