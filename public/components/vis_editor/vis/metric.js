@@ -1,6 +1,6 @@
 import tickFormatter from '../../../lib/tick_formatter';
 import _ from 'lodash';
-import { Metric, getLastValue } from '@elastic/rhythm-visualizations';
+import { Metric, getLastValue } from '@elastic/thor-visualizations';
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import color from 'color';

@@ -13,6 +13,7 @@ export default () => {
     interval: 'auto',
     axis_position: 'left',
     axis_formatter: 'number',
-    show_legend: 1
+    show_legend: 1,
+    h: 2
   };
 };

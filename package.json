@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@elastic/datemath": "^2.3.0",
+    "@elastic/thor-visualizations": "github:simianhacker/thor-visualizations",
     "bluebird": "^3.3.5",
     "boom": "^3.2.2",
     "color": "^0.11.3",

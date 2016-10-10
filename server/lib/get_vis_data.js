@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import calculateAuto from '@elastic/rhythm-visualizations/dist/calculate_auto';
+import calculateAuto from '@elastic/thor-visualizations/dist/calculate_auto';
 import bucketTransform from './bucket_transform';
 import moment from 'moment';
 import calculateLabel from '../../public/components/vis_editor/lib/calculate_label';

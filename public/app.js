@@ -2,7 +2,7 @@ import 'ui/autoload/all';
 import chrome from 'ui/chrome';
 import modules from 'ui/modules';
 import 'kibana-executor-service';
-import '@elastic/rhythm-visualizations/css/main.css';
+import '@elastic/thor-visualizations/css/main.css';
 import 'react-grid-layout/css/styles.css';
 import 'react-select/dist/react-select.css';
 

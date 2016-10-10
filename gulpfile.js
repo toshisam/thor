@@ -116,7 +116,7 @@ gulp.task('dev', ['sync'], function (done) {
   const paths = [
     'package.json',
     'index.js',
-    'node_modules/@elastic/rhythm-visualizations/dist/**/*.js',
+    'node_modules/@elastic/thor-visualizations/dist/**/*.js',
     'public/**/*',
     'server/**/*'
   ];

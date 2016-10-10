@@ -1,6 +1,6 @@
 import tickFormatter from '../../../lib/tick_formatter';
 import _ from 'lodash';
-import { Timeseries } from '@elastic/rhythm-visualizations';
+import { Timeseries } from '@elastic/thor-visualizations';
 import React from 'react';
 import color from 'color';
 

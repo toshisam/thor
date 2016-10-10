@@ -14,6 +14,7 @@ export default React.createClass({
   getDefaultProps() {
     return {
       margin: [0,0],
+      rowHeight: 50,
       measureBeforeMount: true,
       useCSSTransforms: false,
       draggableHandle: '.dashboard__panel-controls'

@@ -1,6 +1,6 @@
 import { setGlobalStateTime } from '../actions/app';
 import moment from 'moment';
-import { events } from '@elastic/rhythm-visualizations';
+import { events } from '@elastic/thor-visualizations';
 import rison from 'rison-node';
 export default dispatch => range => {
   const time = {
