@@ -9,7 +9,7 @@ See the [kibana contributing guide](https://github.com/elastic/kibana/blob/maste
 
 <dl>
   <dt><code>gulp</code></dt>
-  <dd>Build and sync code to the `kibana` directory (which should be a slibling)</dd>
+  <dd>Build and sync code to the <code>kibana</code> directory (which should be a slibling)</dd>
 
   <dt><code>npm start</code></dt>
   <dd>Start kibana and have it include this plugin</dd>
