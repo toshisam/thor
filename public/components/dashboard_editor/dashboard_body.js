@@ -9,43 +9,39 @@ import Visualization from '../vis_editor/visualization';
 const GridLayout = WidthProvider(ReactGridLayout);
 
 export default React.createClass({
-  mixins: [ PureRenderMixin ],
+  // mixins: [ PureRenderMixin ],
 
   getDefaultProps() {
     return {
-      className: 'layout',
-      rowHeight: 100,
-      draggableHandle: '.dashboard__panel-control-move'
+      margin: [0,0],
+      measureBeforeMount: true,
+      useCSSTransforms: false,
+      draggableHandle: '.dashboard__panel-controls'
     };
   },
 
   createElement(el) {
-    var i = el.add ? '+' : el.i;
     const { dashboard } = this.props;
     const editLocation = {
       pathname: `/dashboards/edit/${dashboard.doc.id}/panel/${el.id}`
     };
     return (
-      <div key={i} data-grid={el} className="dashboard__panel">
+      <div key={el.id} data-grid={el} className="dashboard__panel">
         <div className="dashboard__panel-content">
-          <div className="dashboard__panel-header">
-            <div className="dashboard__panel-header-title">
-              {el.title}
+          <div className="dashboard__panel-controls">
+            <div className="dashboard__panel-control-edit">
+              <Link to={editLocation}><i className="fa fa-pencil"></i>&nbsp;</Link>
             </div>
-            <div className="dashboard__panel-header-controls">
-              <div className="dashboard__panel-control-edit">
-                <Link to={editLocation}><i className="fa fa-pencil"></i></Link>
-              </div>
-              <div className="dashboard__panel-control-move">
-                <i className="fa fa-arrows"></i>
-              </div>
-              <div className="dashboard__panel-control-remove">
-                <i className="fa fa-times" onClick={ this.handleRemove(el.id) }></i>
-              </div>
+            <div className="dashboard__panel-control-move">
+              <i className="fa fa-arrows"></i>&nbsp;
+            </div>
+            <div className="dashboard__panel-control-remove">
+              <i className="fa fa-times" onClick={ this.handleRemove(el.id) }></i>&nbsp;
             </div>
           </div>
           <div className="dashboard__panel-body">
             <Visualization
+              backgroundColor={dashboard.doc.background_color}
               className="dashboard__visualization"
               model={el}
               visData={this.props.visData}/>
@@ -77,11 +73,14 @@ export default React.createClass({
     const { dashboard } = this.props;
     const { doc } = dashboard;
     const items = _.map(doc.panels, this.createElement);
+    const style = {};
+    if (doc.background_color) {
+      style.backgroundColor = doc.background_color;
+    }
     return (
-      <div className="dashboard__body">
+      <div className="dashboard__body" style={style}>
         <GridLayout
           onLayoutChange={this.onLayoutChange}
-          margin={[5,5]}
           {...this.props}>
           {items}
         </GridLayout>

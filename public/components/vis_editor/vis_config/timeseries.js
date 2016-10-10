@@ -5,6 +5,7 @@ import Select from 'react-select';
 import createSelectHandler from '../../../lib/create_select_handler';
 import createTextHandler from '../../../lib/create_text_handler';
 import DataFormatPicker from '../data_format_picker';
+import ColorPicker from '../color_picker';
 export default React.createClass({
   render() {
     const { model } = this.props;
@@ -66,8 +67,22 @@ export default React.createClass({
             value={model.show_legend}
             onChange={handleSelectChange('show_legend')}/>
           <DataFormatPicker
+            label="Axis Data Formatter"
             onChange={handleSelectChange('axis_formatter')}
             value={model.axis_formatter}/>
+        </div>
+        <div className="vis_editor__vis_config-row">
+          <div className="vis_editor__label">Background Color</div>
+          <ColorPicker
+            onChange={this.props.onChange}
+            name="background_color"
+            value={model.background_color}/>
+          <div className="vis_editor__label">Value Template (eg.<code>{"{{value}}/s"}</code>)</div>
+          <input
+            className="vis_editor__input-grows"
+            onChange={handleTextChange('axis_value_template')}
+            ref="axis_value_template"
+            defaultValue={model.axis_value_template}/>
         </div>
         <div className="vis_editor__vis_config-row">
           <div className="vis_editor__label">Include Query</div>

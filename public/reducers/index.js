@@ -5,11 +5,13 @@ import app from './app';
 import dashboard from './dashboard';
 import fields from './fields';
 import visData from './vis_data';
+import dashboards from './dashboards';
 
 export default combineReducers({
   routing: routerReducer,
   app,
   dashboard,
   fields,
-  visData
+  visData,
+  dashboards
 });

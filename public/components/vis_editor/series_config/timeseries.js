@@ -60,6 +60,13 @@ export default React.createClass({
             ref="line_width"
             onChange={handleTextChange('line_width')}
             defaultValue={model.line_width}/>
+          <div className="vis_editor__label">Point Size</div>
+          <input
+            className="vis_editor__input-grows"
+            type="text"
+            ref="point_size"
+            onChange={handleTextChange('point_size')}
+            defaultValue={model.point_size != null ? model.point_size : model.line_width}/>
         </div>
       );
     }
@@ -150,8 +157,15 @@ export default React.createClass({
                   onChange={handleSelectChange('axis_position')}/>
               </div>
               <DataFormatPicker
+                label="Axis Data Formatter"
                 onChange={handleSelectChange('axis_formatter')}
                 value={model.axis_formatter}/>
+              <div className="vis_editor__label">Template (eg.<code>{"{{value}}/s"}</code>)</div>
+              <input
+                className="vis_editor__input-grows"
+                onChange={handleTextChange('axis_value_template')}
+                ref="axis_value_template"
+                defaultValue={model.axis_value_template}/>
             </div>
           ) : (<div style={{display:'none'}}/>) }
         </div>

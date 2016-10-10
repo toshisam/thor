@@ -1,6 +1,7 @@
 import { fetchFields } from '../actions/fields';
 import uuid from 'node-uuid';
 import { getDashboard, panelToEdit } from '../actions/dashboard';
+import { push } from 'react-router-redux';
 export default (store, history) => {
   return (req, replace, callback) => {
     const { dispatch, getState } = store;
@@ -12,6 +13,7 @@ export default (store, history) => {
       const _panelToEdit = dashboard.panelToEdit;
       if (!(_panelToEdit && _panelToEdit.id === panelId)) {
         const panel = doc.panels.find(p => p.id === panelId);
+        if (!panel) return dispatch(push(`/dashboards/edit/${id}`));
         dispatch(panelToEdit(panel));
       }
     };

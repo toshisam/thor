@@ -16,15 +16,19 @@ export default React.createClass({
   },
 
   render() {
-    const { model, data } = this.props;
+    const { dashboard, model, data } = this.props;
     const handleTitleChange = value => {
       this.handleChange({ title: value });
     };
+    const style = {};
+    if (dashboard.doc.background_color) {
+      style.backgroundColor = dashboard.doc.background_color;
+    }
     return (
       <div className="vis_editor">
-        <div className="vis_editor__visualization">
-          <div className="vis_editor__visualization-title">{ model.title }</div>
+        <div style={style} className="vis_editor__visualization">
           <Visualization
+            backgroundColor={dashboard.doc.background_color}
             className="dashboard__visualization"
             onChange={this.handleChange}
             {...this.props}/>

@@ -69,11 +69,12 @@ export default React.createClass({
             <span>/</span>
             <Link to={dashboardLink}>{ dashboard.doc.title }</Link>
             <span>/</span>
-            <span>Edit Panel: {model.title}</span>
+            <span>Edit Panel: <strong>{model.title}</strong></span>
           </div>
         </Header>
         <div className="panel_editor__body">
           <VisEditor
+            dashboard={dashboard}
             fields={this.props.fields}
             dispatch={this.props.dispatch}
             onChange={this.handleChange}

@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { Provider } from 'react-redux';
 import onEnterDashboardEdit from './lib/on_enter_dashboard_edit';
 import onEnterDashboardEditPanel from './lib/on_enter_dashboard_edit_panel';
+import onEnterDashboardList from './lib/on_enter_dashboard_list';
 import {
   Router,
   Route,
@@ -29,6 +30,7 @@ export default (props) => {
             <IndexRedirect to="list"/>
             <Route
               path="list"
+              onEnter={onEnterDashboardList(store, history)}
               component={ Dashboards.List }/>
             <Route
               path="edit/:id"

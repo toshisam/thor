@@ -17,7 +17,11 @@ export default React.createClass({
   },
 
   getDefaultProps() {
-    return { name: 'series' };
+    return {
+      name: 'series',
+      limit: Infinity,
+      colorPicker: true
+    };
   },
 
   updateState(obj) {
@@ -29,7 +33,7 @@ export default React.createClass({
 
   renderRow(row, index) {
     const { props } = this;
-    const { fields, model, name } = props;
+    const { fields, model, name, limit, colorPicker } = props;
     return (
       <SortableListItem
         key={index}
@@ -45,6 +49,8 @@ export default React.createClass({
           onDelete={handleDelete.bind(null, props, row)}
           onChange={handleChange.bind(null, props)}
           disableDelete={model[name].length < 2}
+          disableAdd={model[name].length >= limit}
+          colorPicker={colorPicker}
           fields={fields}/>
       </SortableListItem>
     );

@@ -1,8 +1,10 @@
 import React from 'react';
-import Timeseries from './series_config/timeseries';
+import timeseries from './series_config/timeseries';
+import metric from './series_config/metric';
 
 const types = {
-  timeseries: Timeseries
+  timeseries,
+  metric
 };
 
 export default React.createClass({
@@ -38,7 +40,7 @@ export default React.createClass({
         </div>
       );
     }
-    return (<div>Missing Vis Config for {panelType}</div>);
+    return (<div>Missing Series Config for {panelType}</div>);
   }
 });
 

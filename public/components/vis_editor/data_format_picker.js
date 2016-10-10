@@ -3,6 +3,10 @@ import _ from 'lodash';
 import Select from 'react-select';
 export default React.createClass({
 
+  getDefaultProps() {
+    return { label: 'Data Formatter'};
+  },
+
   handleChange(value) {
     if (value.value === 'custom') {
       this.handleCustomChange();
@@ -48,7 +52,9 @@ export default React.createClass({
     }
     return (
       <div className="vis_editor__data_format_picker-container">
-        <div className="vis_editor__label" style={{ marginLeft: 10 }}>Axis Data Formatter</div>
+        <div className="vis_editor__label" style={{ marginLeft: 10 }}>
+          {this.props.label}
+        </div>
         <div className="vis_editor__item">
           <Select
             clearable={false}

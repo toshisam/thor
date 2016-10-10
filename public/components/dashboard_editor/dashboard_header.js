@@ -2,14 +2,15 @@ import React from 'react';
 import _ from 'lodash';
 import Timepicker from '../timepicker/picker';
 import TimepickerConfig from '../timepicker/config';
-import EditableText from '../editable_text';
 import SearchBox from '../search_box';
 import replaceVars from '../../lib/replace_vars';
 import uuid from 'node-uuid';
 import Modal from 'react-modal';
 import PanelEditor from './panel_editor';
 import createNewPanel from '../../lib/create_new_panel';
+import DashboardSettings from './dashboard_settings';
 import ConfigPanel from '../config_panel';
+import { Link } from 'react-router';
 import {
   hidePanelModal,
   showPanelModal,
@@ -68,16 +69,19 @@ export default React.createClass({
     };
     let settings;
     if (this.state.showSettings) {
-      settings = (<div>Dashboard settings</div>);
+      settings = (<DashboardSettings {...this.props}/>);
     }
+    const dashboardsLink = {
+      pathname: `/dashboards`
+    };
     return (
       <div>
         <Header config={settings} onConfigClose={this.handleSettingsClose}>
-          <EditableText
-            className="dashboard__header-title"
-            onChange={this.createHandler('title')}
-            format={ str => replaceVars(str, this.props.location) }
-            value={doc.title}/>
+          <div className="header__breadcrumbs">
+            <Link to={dashboardsLink}>Dashboards</Link>
+            <span>/</span>
+            <span>Edit Dashboard: <strong>{ doc.title }</strong></span>
+          </div>
           <div className="dashboard__header-links">
             <a className="dashboard__header-link"
               onClick={this.addPanel}>

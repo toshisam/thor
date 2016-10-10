@@ -1,5 +1,7 @@
 import React from 'react';
-import { CompactPicker } from 'react-color';
+// import { ChromePicker as Picker } from 'react-color';
+import CustomColorPicker from '../custom_color_picker';
+const Picker = CustomColorPicker;
 export default React.createClass({
 
   getInitialState() {
@@ -7,10 +9,10 @@ export default React.createClass({
   },
 
   handleChange(color) {
+    const { rgb, hex } = color;
     const part = {};
-    part[this.props.name] = color.hex;
+    part[this.props.name] = `rgba(${rgb.r},${rgb.g},${rgb.b},${rgb.a})`;
     if (this.props.onChange) this.props.onChange(part);
-    this.setState({ displayPicker: false });
   },
 
   handleClick() {
@@ -21,16 +23,49 @@ export default React.createClass({
     this.setState({ displayPicker: false });
   },
 
-  render() {
-    return (
-      <div>
+  handleClear() {
+    const part = {};
+    part[this.props.name] = null;
+    this.props.onChange(part);
+  },
+
+  renderSwatch() {
+    if (!this.props.value) {
+      return (
         <div
-          style={{ backgroundColor: this.props.value }}
-          className="vis_editor__color_picker-swatch"
+          className="vis_editor__color_picker-swatch-empty"
           onClick={this.handleClick}/>
+      );
+    }
+    return (
+      <div
+        style={{ backgroundColor: this.props.value }}
+        className="vis_editor__color_picker-swatch"
+        onClick={this.handleClick}/>
+    );
+  },
+
+  render() {
+    const swatch = this.renderSwatch();
+    const value = this.props.value || undefined;
+    let clear;
+    if (!this.props.disableTrash) {
+      clear = (
+        <div className="vis_editor__color_picker-clear" onClick={this.handleClear}>
+          <i className="fa fa-ban"/>
+        </div>
+      );
+    }
+    return (
+      <div className="vis_editor__color_picker">
+        { swatch }
+        { clear }
         { this.state.displayPicker ? <div className="vis_editor__color_picker-popover">
-          <div className="vis_editor__color_picker-cover" onClick={ this.handleClose }/>
-          <CompactPicker color={ this.props.value } onChange={ this.handleChange } />
+          <div className="vis_editor__color_picker-cover"
+            onClick={ this.handleClose }/>
+          <Picker
+            color={ value }
+            onChangeComplete={ this.handleChange } />
         </div> : null }
       </div>
     );

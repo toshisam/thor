@@ -1,8 +1,10 @@
 import React from 'react';
-import Timeseries from './vis_config/timeseries';
+import timeseries from './vis_config/timeseries';
+import metric from './vis_config/metric';
 
 const types = {
-  timeseries: Timeseries
+  timeseries,
+  metric
 };
 
 export default React.createClass({

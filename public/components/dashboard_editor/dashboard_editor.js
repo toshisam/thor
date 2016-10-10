@@ -20,7 +20,6 @@ export default React.createClass({
   componentWillMount() {
     const { dispatch } = this.props;
     this.save = _.debounce((dashboard) => {
-      console.log('Saving', dashboard);
       dispatch(saveDashboard(dashboard));
     }, 1000, { leading: false, trailing: true });
   },

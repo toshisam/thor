@@ -30,6 +30,12 @@ export default {
     },
     data: []
   },
+  dashboards: {
+    request: {
+      isFetching: false
+    },
+    data: []
+  },
   dashboard: {
     request: {},
     panelToEdit: false,

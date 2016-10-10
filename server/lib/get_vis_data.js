@@ -125,7 +125,8 @@ export default (req) => {
 
       let metricAggs;
       let siblingAggs;
-      if (panel.type === 'timeseries') {
+      // if (panel.type === 'timeseries') {
+      if (panel.type) {
         seriesAgg.aggs = _.assign({}, seriesAgg.aggs || {}, {
           timeseries: {
             date_histogram: {
@@ -186,10 +187,12 @@ export default (req) => {
 
 
       panel.series.forEach((series, index) => {
-        if (panel.type === 'timeseries') {
+        // if (panel.type === 'timeseries') {
+        if (panel.type) {
           const metric = _.last(series.metrics);
           const mapBucket = metric => bucket => [ bucket.key, getAggValue(bucket, metric)];
 
+          const pointSize = series.point_size != null ? Number(series.point_size) : Number(series.line_width);
           const decoration = {
             stack: Boolean(series.stacked),
             lines: {
@@ -198,9 +201,9 @@ export default (req) => {
               lineWidth: Number(series.line_width)
             },
             points: {
-              show: series.chart_type === 'line' && series.line_width !== 0,
+              show: series.chart_type === 'line' && pointSize !== 0,
               radius: 1,
-              lineWidth: Number(series.line_width)
+              lineWidth: pointSize
             },
             bars: {
               show: series.chart_type === 'bar',

@@ -1,7 +1,9 @@
+import fetch from 'isomorphic-fetch';
 import uuid from 'node-uuid';
 import initialState from '../lib/initial_state';
 import _ from 'lodash';
 import handleResponse from '../lib/handle_response';
+import moment from 'moment';
 
 export const UPDATE_DASHBOARD = 'UPDATE_DASHBOARD';
 export const RESET_DASHBOARD_DOC = 'RESET_DASHBOARD_DOC ';
@@ -71,10 +73,14 @@ export function saveDashboard(dashboard) {
   };
 }
 
-export function createNewDashboard() {
+export function createNewDashboard(id) {
   return (dispatch, getState) => {
-    const id = uuid.v1();
-    const dashboard = _.assign({}, initialState.dashboard.doc, { id });
+    id = id || uuid.v1();
+    const doc = {
+      id,
+      '@timestamp': moment.utc().toISOString()
+    };
+    const dashboard = _.assign({}, initialState.dashboard.doc, doc);
     return dispatch(saveDashboard(dashboard));
   };
 }

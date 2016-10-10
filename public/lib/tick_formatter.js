@@ -1,5 +1,6 @@
 import numeral from 'numeral';
 import _ from 'lodash';
+import mustache from 'mustache';
 
 const formatLookup = {
   'bytes': '0.0b',
@@ -7,16 +8,23 @@ const formatLookup = {
   'percent': '0.[00]%'
 };
 
-export default (format = '0,0.[00]') => {
+export default (format = '0,0.[00]', template = '{{value}}') => {
   return (val) => {
     const formatString = formatLookup[format] || format;
-    if (!_.isNumber(val)) return '0';
+    let value;
+    if (!_.isNumber(val)) {
+      value = 0;
+    } else {
+      try {
+        value = numeral(val).format(formatString);
+      } catch (e) {
+        value = val;
+      }
+    }
     try {
-      return numeral(val).format(formatString);
+      return mustache.render(template, { value });
     } catch (e) {
-      return val;
+      return value;
     }
   };
 };
-
-

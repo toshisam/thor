@@ -73,10 +73,26 @@
 .vis_editor__row_item { flex-grow: 1; margin-right: 10px; }
 .vis_editor__subhead { font-size: 12px; color: @gray; margin: 5px 0; }
 .vis_editor__subhead-main { font-size: 18px; color: @gray; margin: 10px 0 5px; }
+.vis_editor__note { font-size: 14px; color: @gray; margin: 5px 0 10px 0; }
 
 // color_picker.js
-.vis_editor__color_picker-swatch { border: 2px solid @white; width: 20px; height: 20px; }
-.vis_editor__color_picker-popover { position: absolute; z-index: 2 }
+.vis_editor__color_picker {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.vis_editor__color_picker-swatch { border: 2px solid @grayDarker; width: 20px; height: 20px; }
+.vis_editor__color_picker-swatch-empty {
+  .vis_editor__color_picker-swatch;
+  background-color: transparent;
+  background-size: 20px 20px;
+  background-image: repeating-linear-gradient(-45deg, #C00, #C00 2px, transparent 2px, transparent 16px);
+}
+.vis_editor__color_picker-clear {
+  margin-left: 5px;
+  color: #C00;
+}
+.vis_editor__color_picker-popover { position: absolute; top: 20px; z-index: 2 }
 .vis_editor__color_picker-cover { position: fixed; top: 0px; right: 0px; left: 0px; bottom: 0px; }
 
 // data_format_picker
@@ -172,8 +188,8 @@
   flex: 1 0 auto;
   width: 100%;
   border: 1px solid @lineColor;
-  padding: 10px;
   height: 250px;
+  line-height: normal;
 }
 
 .vis_editor__visualization-title {

@@ -2,10 +2,12 @@ import React from 'react';
 import _ from 'lodash';
 
 import timeseries from './vis/timeseries';
+import metric from './vis/metric';
 import Error from './vis/error';
 
 const types = {
-  timeseries
+  timeseries,
+  metric
 };
 
 export default React.createClass({
@@ -29,12 +31,7 @@ export default React.createClass({
 
     const component = types[model.type];
     if (component) {
-      const vis = React.createElement(component, this.props);
-      return (
-        <div className={this.props.className}>
-          {vis}
-        </div>
-      );
+      return React.createElement(component, this.props);
     }
     return (<div className={this.props.className}></div>);
   }

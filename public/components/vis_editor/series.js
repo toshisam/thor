@@ -73,7 +73,8 @@ export default React.createClass({
       fields,
       onAdd,
       onDelete,
-      disableDelete
+      disableDelete,
+      disableAdd
     } = this.props;
 
     const handleFieldChange = (name) => {
@@ -105,15 +106,23 @@ export default React.createClass({
       );
     }
 
+    let colorPicker;
+    if (this.props.colorPicker) {
+      colorPicker = (
+        <ColorPicker
+          disableTrash={true}
+          onChange={this.handleChange}
+          name="color"
+          value={model.color}/>
+      );
+    }
+
     return (
       <div className="vis_editor__series">
         <div className="vis_editor__container">
           <div className="vis_editor__series-details">
             <div onClick={ this.toggleVisable }><i className={ caretClassName }/></div>
-            <ColorPicker
-              onChange={this.handleChange}
-              name="color"
-              value={model.color}/>
+            { colorPicker }
             <div className="vis_editor__row_item" style={{ display: 'flex' }}>
               <input
                 className="vis_editor__input-grows"
@@ -125,7 +134,8 @@ export default React.createClass({
             <AddDeleteButtons
               onDelete={onDelete}
               onAdd={onAdd}
-              disableDelete={disableDelete}/>
+              disableDelete={disableDelete}
+              disableAdd={disableAdd}/>
           </div>
         </div>
         { body }

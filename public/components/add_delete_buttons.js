@@ -11,12 +11,21 @@ export default (props) => {
       </a>
     );
   };
-  const deleteBtn = createDelete();
-  return (
-    <div className="add_delete__buttons">
+  const createAdd = () => {
+    if (props.disableAdd) {
+      return (<i className="fa fa-plus disabled"></i>);
+    }
+    return (
       <a onClick={ props.onAdd }>
         <i className="fa fa-plus"></i>
       </a>
+    );
+  };
+  const deleteBtn = createDelete();
+  const addBtn = createAdd();
+  return (
+    <div className="add_delete__buttons">
+      { addBtn }
       { deleteBtn }
     </div>
   );
