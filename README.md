@@ -1,7 +1,6 @@
-# rhythm
+# Thor
 
-> A turn key Metrics UI for servers
-
+> A Kibana app for metrics
 ---
 
 ## development
@@ -9,6 +8,9 @@
 See the [kibana contributing guide](https://github.com/elastic/kibana/blob/master/CONTRIBUTING.md) for instructions setting up your development environment. Once you have completed that, use the following npm tasks.
 
 <dl>
+  <dt><code>gulp</code></dt>
+  <dd>Build and sync code to the `kibana` directory (which should be a slibling)</dd>
+
   <dt><code>npm start</code></dt>
   <dd>Start kibana and have it include this plugin</dd>
 
