@@ -1,6 +1,5 @@
 import numeral from 'numeral';
 import _ from 'lodash';
-import mustache from 'mustache';
 import handlebars from 'handlebars/dist/handlebars';
 
 const formatLookup = {
