@@ -21,13 +21,31 @@ export default React.createClass({
     };
   },
 
+  componentWillReceiveProps(props) {
+    // Trigger a resize if we are transitioning
+    // between fullScreen states
+    if (props.fullScreen !== this.props.fullScreen) {
+      _.defer(() => {
+        const event = new Event('resize');
+        window.dispatchEvent(event);
+      });
+    }
+  },
+
   createElement(el) {
-    const { dashboard } = this.props;
+    const { dashboard, location, viewOnly } = this.props;
+    const { doc } = dashboard;
     const editLocation = {
-      pathname: `/dashboards/edit/${dashboard.doc.id}/panel/${el.id}`
+      pathname: `/dashboards/edit/${dashboard.doc.id}/panel/${el.id}`,
+      query: _.assign({}, location.query)
     };
+    const backgroundColor = doc.default_panel_color || doc.background_color;
+    const grid = _.assign({}, el, {
+      static: !!viewOnly
+    });
+    const panelClass = viewOnly ? 'dashboard__panel-viewOnly' : 'dashboard__panel';
     return (
-      <div key={el.id} data-grid={el} className="dashboard__panel">
+      <div key={el.id} data-grid={grid} className={panelClass}>
         <div className="dashboard__panel-content">
           <div className="dashboard__panel-controls">
             <div className="dashboard__panel-control-edit">
@@ -42,7 +60,7 @@ export default React.createClass({
           </div>
           <div className="dashboard__panel-body">
             <Visualization
-              backgroundColor={dashboard.doc.background_color}
+              backgroundColor={backgroundColor}
               className="dashboard__visualization"
               model={el}
               visData={this.props.visData}/>
@@ -75,6 +93,13 @@ export default React.createClass({
     const { doc } = dashboard;
     const items = _.map(doc.panels, this.createElement);
     const style = {};
+    if (this.props.fullScreen) {
+      style.position = 'fixed';
+      style.top = 0;
+      style.right = 0;
+      style.bottom = 0;
+      style.left = 0;
+    }
     if (doc.background_color) {
       style.backgroundColor = doc.background_color;
     }

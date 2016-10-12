@@ -1,6 +1,7 @@
 import numeral from 'numeral';
 import _ from 'lodash';
 import mustache from 'mustache';
+import handlebars from 'handlebars/dist/handlebars';
 
 const formatLookup = {
   'bytes': '0.0b',
@@ -9,6 +10,7 @@ const formatLookup = {
 };
 
 export default (format = '0,0.[00]', template = '{{value}}') => {
+  const render = handlebars.compile(template);
   return (val) => {
     const formatString = formatLookup[format] || format;
     let value;
@@ -22,7 +24,7 @@ export default (format = '0,0.[00]', template = '{{value}}') => {
       }
     }
     try {
-      return mustache.render(template, { value });
+      return render({ value });
     } catch (e) {
       return value;
     }

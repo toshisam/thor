@@ -9,6 +9,7 @@ import { fetchVisData } from '../../actions/vis_data.js';
 import createNewPanel from '../../lib/create_new_panel';
 import { panelToEdit } from '../../actions/dashboard';
 import Header from '../../containers/header';
+import replaceVars from '../../lib/replace_vars';
 export default React.createClass({
 
   fetch(options) {
@@ -54,22 +55,24 @@ export default React.createClass({
   },
 
   render() {
-    const { model, dashboard } = this.props;
+    const { model, dashboard, location, app } = this.props;
     const dashboardsLink = {
       pathname: `/dashboards`
     };
     const dashboardLink = {
-      pathname: `/dashboards/edit/${dashboard.doc.id}`
+      pathname: `/dashboards/edit/${dashboard.doc.id}`,
+      query: _.assign({}, location.query)
     };
+    const title = replaceVars(dashboard.doc.title, app.args);
     return (
       <div className="panel_editor">
         <Header>
           <div className="header__breadcrumbs">
-            <Link to={dashboardsLink}>Dashboards</Link>
+            <Link to={dashboardsLink}>Thor Dashboards</Link>
             <span>/</span>
-            <Link to={dashboardLink}>{ dashboard.doc.title }</Link>
+            <Link to={dashboardLink}>{ title }</Link>
             <span>/</span>
-            <span>Edit Panel: <strong>{model.title}</strong></span>
+            <span>Edit Panel <strong>{model.title}</strong></span>
           </div>
         </Header>
         <div className="panel_editor__body">

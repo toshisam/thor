@@ -1,4 +1,5 @@
 import handleResponse from '../lib/handle_response';
+import replaceVars from '../lib/replace_vars';
 import _ from 'lodash';
 export const VIS_DATA_REQUEST = 'VIS_DATA_REQUEST';
 export const VIS_DATA_RESPONSE = 'VIS_DATA_RESPONSE';
@@ -20,14 +21,17 @@ export function fetchVisData(options) {
   options = _.assign({}, {
     panels: [],
     filters: [],
-    includeDashboard: true
+    includeDashboard: true,
+    vars: {},
+    location: {},
   }, options);
 
   return (dispatch, getState) => {
-    const { filters, panels, includeDashboard } = options;
+    const { filters, panels, location, vars, includeDashboard } = options;
     const { app, visData, dashboard } = getState();
+    const { doc } = dashboard;
     if (visData.request.isFetching) return Promise.resolve();
-    const dashPanels = dashboard.doc.panels
+    const dashPanels = doc.panels
       .filter(panel => {
         const exists = panels.find(p => p && panel && p.id === panel.id);
         return exists ? false : true;
@@ -36,6 +40,12 @@ export function fetchVisData(options) {
         if (!dashboard.panelToEdit) return true;
         return dashboard.panelToEdit.id !== panel.id;
       });
+
+    const globalFilter = replaceVars(doc.global_filter, app.args);
+    const combinedPanels = (includeDashboard ? panels.concat(dashPanels) : panels)
+    .map(p => {
+      return _.assign({}, p, { filter: replaceVars(p.filter, app.args) });
+    });
     const params = {
       method: 'POST',
       credentials: 'same-origin',
@@ -46,8 +56,9 @@ export function fetchVisData(options) {
       },
       body: JSON.stringify({
         timerange: app.timerange,
-        filters: includeDashboard ? filters.concat(dashboard.doc.filters) : filters,
-        panels: includeDashboard ? panels.concat(dashPanels) : panels
+        global_filter: globalFilter,
+        filters: includeDashboard ? filters.concat(doc.filters) : filters,
+        panels: combinedPanels
       })
     };
     dispatch(visDataRequest());

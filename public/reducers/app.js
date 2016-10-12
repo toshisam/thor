@@ -57,7 +57,8 @@ export default (state = {}, action) => {
       });
     case LOCATION_CHANGE:
       return _.assign({}, state, {
-        error: null
+        error: null,
+        args: action.payload.query
       });
     default:
       return state;

@@ -14,7 +14,8 @@ export default {
       paused: false,
       unit: 's',
       value: 10
-    }
+    },
+    args: {}
   },
   routing: {},
   visData: {

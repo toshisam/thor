@@ -15,12 +15,16 @@ const EditPanel = React.createClass({
   },
 
   handleChange(part) {
-    const { dispatch } = this.props;
+    const { dispatch, location } = this.props;
     const doc = _.get(this, 'props.dashboard.doc');
     const newDoc = _.assign({}, doc, part);
     dispatch(updateDashboard(newDoc));
     this.save(newDoc);
-    dispatch(push(`/dashboards/edit/${doc.id}`));
+    const link = {
+      pathname: `/dashboards/edit/${doc.id}`,
+      query: _.assign({}, location.query)
+    };
+    dispatch(push(link));
   },
 
   handlePanelSave(panel) {
@@ -43,7 +47,7 @@ const EditPanel = React.createClass({
           x: 0,
           y: maxY && maxY + 1 || 0, // puts it at the bottom
           w: 12,
-          h: 2
+          h: 4
         })
       ];
     }

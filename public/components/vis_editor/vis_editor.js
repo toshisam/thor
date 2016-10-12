@@ -24,11 +24,16 @@ export default React.createClass({
     if (dashboard.doc.background_color) {
       style.backgroundColor = dashboard.doc.background_color;
     }
+    if (dashboard.doc.panel_margin) {
+      style.padding = dashboard.doc.panel_margin;
+    }
+    const visBackgroundColor = dashboard.doc.default_panel_color ||
+      dashboard.doc.background_color;
     return (
       <div className="vis_editor">
         <div style={style} className="vis_editor__visualization">
           <Visualization
-            backgroundColor={dashboard.doc.background_color}
+            backgroundColor={visBackgroundColor}
             className="dashboard__visualization"
             onChange={this.handleChange}
             {...this.props}/>

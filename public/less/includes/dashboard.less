@@ -102,6 +102,16 @@
   }
 }
 
+.dashboard__panel-viewOnly {
+  display: flex;
+  .react-resizable-handle { opacity: 0; }
+  &:hover {
+    border: none;
+    .dashboard__panel-controls { display: none; }
+    .react-resizable-handle { opacity: 0; }
+  }
+}
+
 .dashboard__panel-content {
   position: absolute;
   top: 0;

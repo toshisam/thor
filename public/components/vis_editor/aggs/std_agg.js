@@ -12,6 +12,10 @@ export default React.createClass({
 
     const handleChange = createChangeHandler(this.props.onChange, model);
     const handleSelectChange = createSelectHandler(handleChange);
+    let restrict = 'numeric';
+    if (model.type === 'cardinality') {
+      restrict = 'string';
+    }
 
     return (
       <AggRow {...this.props}>
@@ -27,7 +31,7 @@ export default React.createClass({
           <FieldSelect
             fields={fields}
             type={model.type}
-            restrict="numeric"
+            restrict={restrict}
             value={model.field}
             onChange={handleSelectChange('field')}/>
         </div>) : (<div style={{ display: 'none' }}/>) }

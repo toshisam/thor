@@ -2,6 +2,7 @@ import Boom from 'boom';
 import saveDashboard from '../../lib/save_dashboard';
 import getDashboard from '../../lib/get_dashboard';
 import getDashboards from '../../lib/get_dashboards';
+import deleteDashboard from '../../lib/delete_dashboard';
 
 export default (server) => {
 
@@ -36,6 +37,14 @@ export default (server) => {
         console.log(e);
         reply(e);
       });
+    }
+  });
+
+  server.route({
+    method: 'DELETE',
+    path: '/api/thor/dashboards/{id}',
+    handler: (req, reply) => {
+      return deleteDashboard(req).then(reply).catch(reply);
     }
   });
 

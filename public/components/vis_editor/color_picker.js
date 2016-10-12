@@ -1,5 +1,5 @@
 import React from 'react';
-// import { ChromePicker as Picker } from 'react-color';
+import Tooltip from '../tooltip';
 import CustomColorPicker from '../custom_color_picker';
 const Picker = CustomColorPicker;
 export default React.createClass({
@@ -52,7 +52,9 @@ export default React.createClass({
     if (!this.props.disableTrash) {
       clear = (
         <div className="vis_editor__color_picker-clear" onClick={this.handleClear}>
-          <i className="fa fa-ban"/>
+          <Tooltip text="Clear">
+            <i className="fa fa-ban"/>
+          </Tooltip>
         </div>
       );
     }

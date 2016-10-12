@@ -85,20 +85,20 @@ export default React.createClass({
             defaultValue={model.axis_value_template}/>
         </div>
         <div className="vis_editor__vis_config-row">
-          <div className="vis_editor__label">Include Query</div>
+          <div className="vis_editor__label">Panel Filter</div>
           <input
             className="vis_editor__input-grows"
             type="text"
-            ref="include_query"
-            onChange={handleTextChange('include_query')}
-            defaultValue={model.include_query}/>
-          <div className="vis_editor__label">Exclude Query</div>
-          <input
-            className="vis_editor__input-grows"
-            type="text"
-            ref="exclude_query"
-            onChange={handleTextChange('exclude_query')}
-            defaultValue={model.exclude_query}/>
+            ref="filter"
+            onChange={handleTextChange('filter')}
+            defaultValue={model.filter}/>
+          <div className="vis_editor__label">Ignore Global Filter</div>
+          <Select
+            autosize={false}
+            clearable={false}
+            options={yesNoOptions}
+            value={model.ignore_global_filter}
+            onChange={handleSelectChange('ignore_global_filter')}/>
         </div>
       </div>
     );

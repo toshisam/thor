@@ -13,7 +13,8 @@ export default React.createClass({
           flex: '1 0 auto',
           backgroundColor: '#FFD9D9',
           color: '#C00',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          padding: '20px'
         },
         title: {
           textAlign: 'center',

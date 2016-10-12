@@ -37,6 +37,10 @@ export default (props) => {
               onEnter={ onEnterDashboardEdit(store, history) }
               component={ Dashboards.Edit }/>
             <Route
+              path="view/:id"
+              onEnter={ onEnterDashboardEdit(store, history) }
+              component={ Dashboards.View }/>
+            <Route
               path="edit/:id/panel/:panelId"
               onEnter={ onEnterDashboardEditPanel(store, history) }
               component={ Dashboards.EditPanel }/>

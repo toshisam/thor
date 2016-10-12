@@ -45,14 +45,18 @@ export default React.createClass({
   },
 
   addPanel() {
-    const { dispatch, dashboard } = this.props;
+    const { dispatch, dashboard, location } = this.props;
     const panel = createNewPanel();
     dispatch(panelToEdit(panel));
-    dispatch(push(`/dashboards/edit/${dashboard.doc.id}/panel/${panel.id}`));
+    const link = {
+      pathname: `/dashboards/edit/${dashboard.doc.id}/panel/${panel.id}`,
+      query: _.assign({}, location.query)
+    };
+    dispatch(push(link));
   },
 
   render() {
-    const { dashboard } = this.props;
+    const { viewOnly, location, dashboard, app } = this.props;
     const { showPanelModal, panelToEdit, doc } = dashboard;
     const modalStyle = {
       overlay: {
@@ -74,25 +78,55 @@ export default React.createClass({
     const dashboardsLink = {
       pathname: `/dashboards`
     };
+    const viewType = viewOnly ? 'view' : 'edit';
+    const fullScreenLink = {
+      pathname: `/dashboards/${viewType}/${dashboard.doc.id}`,
+      query: _.assign({}, location.query, {
+        fullScreen: true
+      })
+    };
+    const editLink = {
+      pathname: `/dashboards/edit/${dashboard.doc.id}`,
+      query: _.assign({}, location.query)
+    };
+    const title = replaceVars(doc.title, app.args);
     return (
       <div>
         <Header config={settings} onConfigClose={this.handleSettingsClose}>
           <div className="header__breadcrumbs">
-            <Link to={dashboardsLink}>Dashboards</Link>
+            <Link to={dashboardsLink}>Thor Dashboards</Link>
             <span>/</span>
-            <span>Edit Dashboard: <strong>{ doc.title }</strong></span>
+            <span><strong>{ title }</strong></span>
           </div>
           <div className="dashboard__header-links">
-            <a className="dashboard__header-link"
-              onClick={this.addPanel}>
-              <i className="fa fa-plus"></i>
-              &nbsp;Add Panel
-            </a>
-            <a className="dashboard__header-link"
-              onClick={this.handleSettingsOpen}>
-              <i className="fa fa-cog"></i>
-              &nbsp;Dashboard Settings
-            </a>
+            { !viewOnly ? (
+              <a className="dashboard__header-link"
+                onClick={this.addPanel}>
+                <i className="fa fa-plus"></i>
+                &nbsp;Add Panel
+              </a>
+            ) : ''}
+            { !viewOnly ? (
+             <a className="dashboard__header-link"
+                onClick={this.handleSettingsOpen}>
+                <i className="fa fa-cog"></i>
+                &nbsp;Dashboard Settings
+              </a>
+            ) : ''}
+            { viewOnly ? (
+            <Link to={editLink}
+              onClick={this.handleFullScreen}
+              className="dashboard__header-link">
+              <i className="fa fa-pencil"></i>
+              &nbsp;Edit Dashboard
+            </Link>
+            ) : ''}
+            <Link to={fullScreenLink}
+              onClick={this.handleFullScreen}
+              className="dashboard__header-link">
+              <i className="fa fa-arrows-alt"></i>
+              &nbsp;Full Screen
+            </Link>
           </div>
         </Header>
       </div>

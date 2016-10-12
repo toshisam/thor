@@ -47,12 +47,19 @@ export default React.createClass({
   },
 
   render() {
+    const { dashboard, location } = this.props;
+    const margin = Number(dashboard.doc.panel_margin) || 0;
+    const fullScreen = Boolean(location.query.fullScreen) ||
+      this.props.fullScreen;
     return (
       <div className="dashboard">
         <DashboardHeader
+          onFullScreen={ this.handleFullScreen }
           onChange={ this.handleChange }
           {...this.props}/>
         <DashboardBody
+          margin={[margin, margin]}
+          fullScreen={fullScreen}
           onLayoutChange={ this.handleLayoutChange }
           onChange={ this.handleChange }
           {...this.props}/>

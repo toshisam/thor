@@ -22,11 +22,12 @@ export default (req) => {
   const { server } = req;
   const { callWithRequest } = server.plugins.elasticsearch;
   const config = server.config();
+  const globalFilter = req.payload.global_filter;
+  const from = moment.utc(req.payload.timerange.min);
+  const to = moment.utc(req.payload.timerange.max);
 
   return (panel) => {
     const { index_pattern, time_field, interval } = panel;
-    const from = moment.utc(req.payload.timerange.min);
-    const to = moment.utc(req.payload.timerange.max);
     let duration = moment.duration(to.valueOf() - from.valueOf(), 'ms');
     let bucketSize = calculateAuto.near(100, duration).asSeconds();
     let intervalString = `${bucketSize}s`;
@@ -62,19 +63,19 @@ export default (req) => {
     };
     params.body.query.bool.must.push(timerange);
 
-    if (panel.include_query) {
+    if (globalFilter && !panel.ignore_global_filter) {
       params.body.query.bool.must.push({
         query_string: {
-          query: panel.include_query,
+          query: globalFilter,
           analyze_wildcard: true
         }
       });
     }
 
-    if (panel.exclude_query) {
-      params.body.query.bool.must_not.push({
+    if (panel.filter) {
+      params.body.query.bool.must.push({
         query_string: {
-          query: panel.exclude_query,
+          query: panel.filter,
           analyze_wildcard: true
         }
       });

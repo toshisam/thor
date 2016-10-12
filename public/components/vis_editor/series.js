@@ -133,6 +133,7 @@ export default React.createClass({
             </div>
             <AddDeleteButtons
               onDelete={onDelete}
+              onClone={this.props.onClone}
               onAdd={onAdd}
               disableDelete={disableDelete}
               disableAdd={disableAdd}/>

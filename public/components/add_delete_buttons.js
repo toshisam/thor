@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import Tooltip from './tooltip';
 
 export default (props) => {
   const createDelete = () => {
@@ -23,8 +24,19 @@ export default (props) => {
   };
   const deleteBtn = createDelete();
   const addBtn = createAdd();
+  let clone;
+  if (props.onClone) {
+    clone = (
+      <Tooltip text="Clone">
+        <a onClick={ props.onClone }>
+          <i className="fa fa-files-o"></i>
+        </a>
+      </Tooltip>
+    );
+  }
   return (
     <div className="add_delete__buttons">
+      { clone }
       { addBtn }
       { deleteBtn }
     </div>

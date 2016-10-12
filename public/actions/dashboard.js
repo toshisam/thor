@@ -4,6 +4,7 @@ import initialState from '../lib/initial_state';
 import _ from 'lodash';
 import handleResponse from '../lib/handle_response';
 import moment from 'moment';
+import { fetchDashboards } from './dashboards';
 
 export const UPDATE_DASHBOARD = 'UPDATE_DASHBOARD';
 export const RESET_DASHBOARD_DOC = 'RESET_DASHBOARD_DOC ';
@@ -17,6 +18,10 @@ export const SAVE_DASHBOARD_ERROR = 'SAVE_DASHBOARD_ERROR';
 export const GET_DASHBOARD_REQUEST = 'GET_DASHBOARD_REQUEST';
 export const GET_DASHBOARD_RESPONSE = 'GET_DASHBOARD_RESPONSE';
 export const GET_DASHBOARD_ERROR = 'GET_DASHBOARD_ERROR';
+
+export const DELETE_DASHBOARD_REQUEST = 'DELETE_DASHBOARD_REQUEST';
+export const DELETE_DASHBOARD_RESPONSE = 'DELETE_DASHBOARD_RESPONSE';
+export const DELETE_DASHBOARD_ERROR = 'DELETE_DASHBOARD_ERROR';
 
 export function updateDashboard(doc) {
   return {
@@ -78,12 +83,14 @@ export function createNewDashboard(id) {
     id = id || uuid.v1();
     const doc = {
       id,
-      '@timestamp': moment.utc().toISOString()
+      '@timestamp': moment.utc().toISOString(),
+      panel_margin: 0
     };
     const dashboard = _.assign({}, initialState.dashboard.doc, doc);
     return dispatch(saveDashboard(dashboard));
   };
 }
+
 
 export function getDashboardRequest() {
   return { type: GET_DASHBOARD_REQUEST };
@@ -116,4 +123,44 @@ export function getDashboard(id) {
     .catch(e => dispatch(getDashboardError(e)));
   };
 }
+
+export function deleteDashboardRequest() {
+  return { type: DELETE_DASHBOARD_REQUEST };
+}
+
+export function deleteDashboardResponse(json) {
+  return { type: DELETE_DASHBOARD_RESPONSE, json };
+}
+
+export function deleteDashboardError(error) {
+  return { type: DELETE_DASHBOARD_ERROR, error };
+}
+
+export function deleteDashboard(id) {
+  return (dispatch, getState) => {
+    const { app } = getState();
+    const params = {
+      method: 'DELETE',
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'kbn-version': app.kbnVersion
+      },
+    };
+    dispatch(deleteDashboardRequest());
+    return fetch(`../api/thor/dashboards/${id}`, params)
+    .then(handleResponse)
+    .then(json => {
+      dispatch(deleteDashboardResponse(json));
+      dispatch(fetchDashboards());
+    })
+    .catch(e => {
+      console.log(e);
+      dispatch(deleteDashboardError(e));
+    });
+  };
+}
+
+
 
